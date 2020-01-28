@@ -63,22 +63,23 @@ function mainActivity()
 			{action = "touchUp", target = Location(690, 1750)}
 		}
 		manualTouch(actionList)
-	end
-
-	-- Выбор способности
-	-- Фиксануть баг со временем...
-	while not (colorTest(231, 247, 220, 435, 1630)) do	-------------------------------- infinity
+	end	
+	
+	while not (colorTest(0, 82, 174, 525, 2000)) do				-- Ждём возможности передвигаться
 		wait(0.1)
+		actionList = {											-- Выбрать центральную способность
+			{action = "touchDown", target = Location(435, 1630)},
+			{action = "touchUp", target = Location(435, 1630)}
+		}
+		manualTouch(actionList)
 	end
-	actionList = {
-		{action = "touchDown", target = Location(435, 1630)},
-		{action = "touchUp", target = Location(435, 1630)},
-		{action = "wait", target = 0.4},
+	
+	actionList = {												-- Двигаемся к колесу удачи
 		{action = "touchDown", target = Location(525, 2000)},
 		{action = "touchMove", target = Location(525, 1600)}
 	}
 	manualTouch(actionList)
-
+	
 	-- Ожидаем колесо удачи
 	while not (colorTest(254, 197, 20, 670, 1765)) do
 		wait(0.1)
