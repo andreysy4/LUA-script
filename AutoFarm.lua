@@ -10,8 +10,13 @@
 --		они работают медленней (из-за постоянного запроса получения Root).
 -- manualTouch запрашивает Root 1 раз для всей таблицы.
 
-version = "1.0.2"
-eR = 5															-- Ошибка цвета пикселя (Color +- eR)
+VERSION = "1.0.2"
+ERROR_RANGE = 5													-- Ошибка цвета пикселя (Color +- ERROR_RANGE)
+MAX_ITER = 1000000												-- Максимальная длинна циклов while
+WAIT_TIME = 0.05												-- Задержка перед очередной итерацией поиска
+GAME_PACK_NAME = "com.habby.archero"							-- Имя пакета Archaro
+ANKULUA_PACK_NAME = "com.appautomatic.ankulua.pro2"				-- Имя пакета AnkuLua
+GG_PACK_NAME = "com.blwxahnttq"									-- Имя пакета GameGuardian
 
 function setTimes()
 	dialogInit()
@@ -25,14 +30,35 @@ function setTimes()
     dialogShow("Settings")
 end
 
+
+-- Функция сравнения ожидаемого цвета пикселя с его фактическим + погрешность (ERROR_RANGE)
+-- Принемает: 	expR, expG, expB - ожидаемый цвет канала пикселя 0..256
+-- 		x, y - позиция пикселя на экране
+-- Возвращает:	True, если цвета примерно равны, иначе False
 function colorTest(expR, expG, expB, x, y)
 	local r, g, b = getColor(Location(x, y))
-	if (expR + eR > r and r > expR - eR
-		and expG + eR > g and g > expG - eR
-		and expB + eR > b and b > expB - eR) then
+	if (expR + ERROR_RANGE > r and r > expR - ERROR_RANGE
+		and expG + ERROR_RANGE > g and g > expG - ERROR_RANGE
+		and expB + ERROR_RANGE > b and b > expB - ERROR_RANGE) then
 			return true
 	end
 	return false
+end
+
+-- Функция ожидания пикселя на экране. Ожидает MAX_ITER с паузами в WAIT_TIME.
+-- Если пиксель найден, то скрипт выполняется далее, иначе выход и закрывает
+-- 		открытые приложения (Archaro, AnkuLua, GG)
+function waitColor(expR, expG, expB, x, y)						
+	for i = 1, MAX_ITER do
+		if colorTest(expR, expG, expB, x, y) then
+			return
+		end
+		wait(WAIT_TIME)
+	end
+	scriptExit("Превышено максимальное число итераций поиска")
+	killApp(GAME_PACK_NAME)
+	killApp(GG_PACK_NAME)
+	killApp(ANKULUA_PACK_NAME)
 end
 
 function mainActivity()
@@ -46,10 +72,12 @@ function mainActivity()
 	}
 	manualTouch(actionList)
 
-	while not colorTest(117, 252, 28, 380, 125) do				-- Ждём заполнения стамины		
-		wait(0.1)
-	end
-
+	--while not colorTest(117, 252, 28, 380, 125) do				-- Ждём заполнения стамины		
+	--	wait(0.1)
+	--end
+	
+	waitColor(117, 252, 28, 380, 125)
+	
 	actionList = {												-- Замедлить время через GG
 		{action = "touchDown", target = Location(1020, 145)},
 		{action = "touchUp", target = Location(1020, 145)}	
