@@ -106,14 +106,13 @@ function mainActivity()
 	manualTouch(actionList)
 
 	-- Кнопка игры
-	if (colorTest(248, 54, 45, 690, 1750)) then
-		actionList = {
-			{action = "touchDown", target = Location(690, 1750)},
-			{action = "touchUp", target = Location(690, 1750)}
-		}
-		manualTouch(actionList)
-	end	
-	
+	waitColor(248, 54, 45, 690, 1750)
+	actionList = {
+		{action = "touchDown", target = Location(690, 1750)},
+		{action = "touchUp", target = Location(690, 1750)}
+	}
+	manualTouch(actionList)
+
 	while not (colorTest(0, 82, 174, 525, 2000)) do				-- Ждём возможности передвигаться
 		wait(0.1)
 		actionList = {											-- Выбрать центральную способность
@@ -153,10 +152,11 @@ function mainActivity()
 	}
 	manualTouch(actionList)
 
-	waitColor(255, 255, 255, 900, 2000)							-- Ждём следующую комнату
+	waitColor(0, 0, 0, 900, 2000)								-- Ждём следующую комнату
 	actionList = {
 		{action = "touchUp", target = Location(525, 2000)},		-- Останавливаем персонажа
-		{action = "touchDown", target = Location(525, 2000)}	
+		{action = "touchDown", target = Location(525, 2000)},
+		{action = "touchMove", target = Location(525, 1600)}
 	}
 	manualTouch(actionList)
 	
@@ -164,7 +164,7 @@ function mainActivity()
 	while not colorTest(248, 54, 45, 690, 1750) do				-- Ждём начального экрана
 		actionList = {
 			{action = "touchDown", target = Location(910, 1800)},	-- Нажать на пустое место
-			{action = "touchUp", target = Location(910, 1800)},
+			{action = "touchUp", target = Location(910, 1800)}
 		}
 		manualTouch(actionList)
 		wait(0.2)
@@ -176,6 +176,7 @@ end
 ---------------------------------------------------
 local dec = 1
 setProperties()
+toast ("Повторов = " .. times .. " с задержкой = "..gap)
 if times == 0 then
 	dec = 0
 end
