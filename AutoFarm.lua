@@ -153,15 +153,15 @@ function mainActivity()
 	}
 	manualTouch(actionList)
 
-	waitColor(0, 0, 0, 900, 2000)								-- Ждём следующую комнату
+	waitColor(255, 255, 255, 900, 2000)							-- Ждём следующую комнату
 	actionList = {
 		{action = "touchUp", target = Location(525, 2000)},		-- Останавливаем персонажа
 		{action = "touchDown", target = Location(525, 2000)}	
 	}
 	manualTouch(actionList)
-
+	
+	waitColor(223, 216, 208, 850, 1150)							-- Ожидаем экран смерти	
 	while not colorTest(248, 54, 45, 690, 1750) do				-- Ждём начального экрана
-		toast("ssss")
 		actionList = {
 			{action = "touchDown", target = Location(910, 1800)},	-- Нажать на пустое место
 			{action = "touchUp", target = Location(910, 1800)},
@@ -176,7 +176,6 @@ end
 ---------------------------------------------------
 local dec = 1
 setProperties()
-toast ("Повторов = " .. times .. " с задержкой = "..gap)
 if times == 0 then
 	dec = 0
 end
