@@ -23,7 +23,7 @@ function sleepScript()
 end
 
 function readFromFile()
-	file = io.open("Saves.txt", "r")
+	file = io.open("HP_freezer_save.txt", "r")
 	first = file:read "*l"
 	second = file:read "*l"
 	file:close()
@@ -31,7 +31,9 @@ function readFromFile()
 end
 
 function saveToFile(startHP, newHP)
-
+	file = io.open("HP_freezer_save.txt", "w")
+	file:write(startHP, '\n', newHP)
+	file:close()
 end
 
 ---------------------------------------------------
