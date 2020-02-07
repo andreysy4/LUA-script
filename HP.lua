@@ -32,13 +32,28 @@ end
 
 function saveToFile(startHP, newHP)
 	file = io.open("HP_freezer_save.txt", "w")
-	file:write(startHP, '\n', newHP)
+	file:write(startHP, '\n', newHP, '\n')
 	file:close()
+end
+
+function aaa()
+	::mark::
+	gg.processPause()
+	resTable = gg.prompt({'massage'}, {value}, {'number'})
+	if not resTable then 
+		goto mark
+	end
+	startHP = resTable[1]
+	gg.searchNumber(startHP, gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1)
+	gg.processResume()
+	gg.setVisible(false)
+	gg.toast('Измените кол. HP, а затем откройте GG')
 end
 
 ---------------------------------------------------
 ---------------------   Main   --------------------
 ---------------------------------------------------
+
 local startHP = 0
 local newHP = 0
 
@@ -54,17 +69,33 @@ end
 gg.clearResults()
 gg.clearList()	
 
+::UserInputStartHP::
+gg.toast(startHP)
+sleepScript()
 gg.processPause()
-startHP = inputHP('Начальное количество HP:')
-gg.searchNumber(startHP, gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1)
+resTable = gg.prompt({'Начальное количество HP:'}, {startHP}, {'number'})
+if not resTable then
+	gg.setVisible(false)
+	gg.processResume()
+	goto UserInputStartHP
+end
+startHP = resTable[1]
+gg.searchNumber(resTable[1], gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1)
 gg.processResume()
 gg.setVisible(false)
 gg.toast('Измените кол. HP, а затем откройте GG')
 
 while true do
+	::UserInputNewHP::
 	sleepScript()
 	gg.processPause()
-	newHP = inputHP('Изменнённое значение HP:')
+	resTable = gg.prompt({'Изменнённое значение HP:'}, {newHP}, {'number'})
+	if not resTable then
+		gg.setVisible(false)
+		gg.processResume()
+		goto UserInputNewHP
+	end
+	newHP = resTable[1]
 	gg.searchNumber(newHP, gg.TYPE_DWORD, false, gg.SIGN_EQUAL, 0, -1)
 	if gg.getResultCount() < 5 then
 		break
@@ -75,7 +106,7 @@ while true do
 end
 
 local resTable = gg.getResults(5, nil, nil, nil, nil, nil, nil, nil, nil)
-for i, v in ipairs(resTable) do --gg.getResultCount()
+for i, v in ipairs(resTable) do
 	resTable[i].value = startHP
 	resTable[i].freeze = true
 end
@@ -83,8 +114,7 @@ gg.addListItems(resTable)
 gg.processResume()
 gg.setVisible(false)
 gg.toast('Бесконечное здоровье успешно активировано')
-
-
+pcall(saveToFile, startHP, newHP)
 
 
 
