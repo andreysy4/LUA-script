@@ -14,19 +14,19 @@ VERSION = "1.0.2"
 ERROR_RANGE = 5													-- Ошибка цвета пикселя (Color +- ERROR_RANGE)
 MAX_ITER = 1000000												-- Максимальная длинна циклов while
 WAIT_TIME = 0.05												-- Задержка перед очередной итерацией поиска
-GAME_PACK_NAME = "com.habby.archero"							-- Имя пакета Archaro
-ANKULUA_PACK_NAME = "com.appautomatic.ankulua.pro2"				-- Имя пакета AnkuLua
-GG_PACK_NAME = "com.blwxahnttq"									-- Имя пакета GameGuardian
+GAME_PACK_NAME = "com.habby.archero"										-- Имя пакета Archaro
+ANKULUA_PACK_NAME = "com.appautomatic.ankulua.pro2"								-- Имя пакета AnkuLua
+GG_PACK_NAME = "com.blwxahnttq"											-- Имя пакета GameGuardian
 
 --[[ Функция ввода переменных пользователем. Т.к. они глобальные, то сохраняются после перезапуска ]]
 function setProperties()
 	dialogInit()
-    addTextView("  Повторов. 0 - бесконечно: ")
-    addEditNumber("times", 0)
-    newRow()
-    addTextView("  Время ожидания перед повтором: ")
-    addEditNumber("gap", 1)
-    newRow()
+	addTextView("  Повторов. 0 - бесконечно: ")
+	addEditNumber("times", 0)
+	newRow()
+	addTextView("  Время ожидания перед повтором: ")
+	addEditNumber("gap", 1)
+	newRow()
 	
 	addSeparator()
 	addTextView("  Имя пакета Archaro: ")
@@ -98,7 +98,7 @@ function mainActivity()
 	}
 	manualTouch(actionList)
 
-	waitColor(117, 252, 28, 380, 125)							-- Ждём заполнения стамины
+	waitColor(117, 252, 28, 380, 125)									-- Ждём заполнения стамины
 	actionList = {												-- Замедлить время через GG
 		{action = "touchDown", target = Location(1020, 145)},
 		{action = "touchUp", target = Location(1020, 145)}	
@@ -113,7 +113,7 @@ function mainActivity()
 	}
 	manualTouch(actionList)
 
-	while not (colorTest(0, 82, 174, 525, 2000)) do				-- Ждём возможности передвигаться
+	while not (colorTest(0, 82, 174, 525, 2000)) do								-- Ждём возможности передвигаться
 		wait(0.1)
 		actionList = {											-- Выбрать центральную способность
 			{action = "touchDown", target = Location(435, 1630)},
@@ -127,43 +127,43 @@ function mainActivity()
 	}
 	manualTouch(actionList)
 	
-	waitColor(254, 197, 20, 670, 1765)							-- Ожидаем колесо удачи
+	waitColor(254, 197, 20, 670, 1765)									-- Ожидаем колесо удачи
 	actionList = {
 		{action = "touchUp", target = Location(670, 1765)},
-		{action = "touchDown", target = Location(850, 145)},	-- Открыть GG
+		{action = "touchDown", target = Location(850, 145)},						-- Открыть GG
 		{action = "touchUp", target = Location(850, 145)},
 		{action = "wait", target = 0.4},
-		{action = "touchDown", target = Location(235, 1215)},	-- Перезапустить скрипт GG
+		{action = "touchDown", target = Location(235, 1215)},						-- Перезапустить скрипт GG
 		{action = "touchUp", target = Location(235, 1215)}
 	}
 	manualTouch(actionList)
 
-	waitColor(254, 197, 20, 670, 1765)							-- Ожидаем колесо удачи
+	waitColor(254, 197, 20, 670, 1765)									-- Ожидаем колесо удачи
 	actionList = {
-		{action = "touchDown", target = Location(670, 1765)},	-- Тыкнуть по колесу удачи
+		{action = "touchDown", target = Location(670, 1765)},						-- Тыкнуть по колесу удачи
 		{action = "touchUp", target = Location(670, 1765)}
 	}
 	manualTouch(actionList)
 		
-	waitColor(0, 82, 174, 525, 2000)							-- Ждём возможности передвигаться
+	waitColor(0, 82, 174, 525, 2000)									-- Ждём возможности передвигаться
 	actionList = {
-		{action = "touchDown", target = Location(525, 2000)},	-- Движемся в соседнюю комнату
+		{action = "touchDown", target = Location(525, 2000)},						-- Движемся в соседнюю комнату
 		{action = "touchMove", target = Location(525, 1600)}
 	}
 	manualTouch(actionList)
 
-	waitColor(0, 0, 0, 900, 2000)								-- Ждём следующую комнату
+	waitColor(0, 0, 0, 900, 2000)										-- Ждём следующую комнату
 	actionList = {
-		{action = "touchUp", target = Location(525, 2000)},		-- Останавливаем персонажа
+		{action = "touchUp", target = Location(525, 2000)},						-- Останавливаем персонажа
 		{action = "touchDown", target = Location(525, 2000)},
 		{action = "touchMove", target = Location(525, 1600)}
 	}
 	manualTouch(actionList)
 	
-	waitColor(223, 216, 208, 850, 1150)							-- Ожидаем экран смерти	
-	while not colorTest(248, 54, 45, 690, 1750) do				-- Ждём начального экрана
+	waitColor(223, 216, 208, 850, 1150)									-- Ожидаем экран смерти	
+	while not colorTest(248, 54, 45, 690, 1750) do								-- Ждём начального экрана
 		actionList = {
-			{action = "touchDown", target = Location(910, 1800)},	-- Нажать на пустое место
+			{action = "touchDown", target = Location(910, 1800)},					-- Нажать на пустое место
 			{action = "touchUp", target = Location(910, 1800)}
 		}
 		manualTouch(actionList)
